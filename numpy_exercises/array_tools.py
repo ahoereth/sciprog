@@ -1,5 +1,6 @@
-import numpy as np
 from math import ceil
+
+import numpy as np
 
 
 def sub_array(array, shape, center, fill=None):
