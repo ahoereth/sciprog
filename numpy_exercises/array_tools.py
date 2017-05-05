@@ -9,12 +9,12 @@ def sub_array(array, shape, center, fill=None):
     rows, cols = shape
     row, col = center
     tlr, tlc = row - ceil(rows / 2) + 1, col - ceil(cols / 2) + 1
-    brr, brc = tlr + rows, tlc+cols
+    brr, brc = tlr + rows, tlc + cols
     result = array[max(tlr, 0):brr, max(tlc, 0):brc]
     if fill is not None:
-        left = 0 if tlc >= 0 else abs(tlr)
+        left = 0 if tlc >= 0 else abs(tlc)
         right = 0 if brc <= width else brc - width
-        top = 0 if tlr >= 0 else abs(tlc)
+        top = 0 if tlr >= 0 else abs(tlr)
         bottom = 0 if brr <= height else brr - height
         result = np.pad(result, ((top, bottom), (left, right)),
                         mode='constant', constant_values=fill)
@@ -109,10 +109,10 @@ if __name__ == '__main__':
     B = [[5, 6],
          [8, 9]]
     assert np.all(sub_array(A, (2, 2), (1, 1)) == B)
-    assert np.all(sub_array(A, (3, 2), (1, 1)) == C)
     C = [[2, 3],
          [5, 6],
          [8, 9]]
+    assert np.all(sub_array(A, (3, 2), (1, 1)) == C)
     assert np.all(sub_array(A, (2, 2), (2, 2)) == [[9]])
     D = [[9, 0],
          [0, 0]]
@@ -121,6 +121,15 @@ if __name__ == '__main__':
          [0, 1, 2],
          [0, 4, 5]]
     assert np.all(sub_array(A, (3, 3), (0, 0), fill=0) == E)
+    F = [[1, 2, 3, 4, 5, 6],
+         [7, 8, 9, 10, 11, 12],
+         [13, 14, 15, 16, 17, 18],
+         [19, 20, 21, 22, 23, 24],
+         [25, 26, 27, 28, 29, 30]]
+    G = [[0, 0, 7, 8, 9],
+         [0, 0, 13, 14, 15],
+         [0, 0, 19, 20, 21]]
+    assert np.all(sub_array(F, (3, 5), (2, 0), 0) == G)
 
     # More tests used for verification after finishing the implementation.
     # Props @shoeffner
