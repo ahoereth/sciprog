@@ -17,6 +17,13 @@ def mean_attack_by_type(df):
 
     Return: dataframe with type and attack columns
     """
+    # return pd.DataFrame.from_dict(
+    #             {t: df[df['Type 1'] == t]['Attack'].mean()
+    #                 for t in df['Type 1'].unique()}, orient='index'
+    #     ).reset_index().rename(str, {'index': 'Type 1', 0: 'Attack'})
+    # return pd.DataFrame({'Attack': [df[df['Type 1'] == t]['Attack'].mean()
+    #                                 for t in df['Type 1'].unique()],
+    #                      'Type 1': df['Type 1'].unique()})
     return pd.DataFrame(df.groupby('Type 1')['Attack'].mean()).reset_index()
 
 
