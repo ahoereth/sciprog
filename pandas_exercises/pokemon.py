@@ -24,7 +24,7 @@ def mean_attack_by_type(df):
     # return pd.DataFrame({'Attack': [df[df['Type 1'] == t]['Attack'].mean()
     #                                 for t in df['Type 1'].unique()],
     #                      'Type 1': df['Type 1'].unique()})
-    return pd.DataFrame(df.groupby('Type 1')['Attack'].mean()).reset_index()
+    return df.groupby('Type 1')['Attack'].mean().reset_index()
 
 
 def high_defense(df):
