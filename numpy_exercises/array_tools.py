@@ -1,3 +1,4 @@
+"""Scientific programming in python exercice 4."""
 from math import ceil
 
 import numpy as np
@@ -13,7 +14,7 @@ def sub_array(array, shape, center, fill=None):
     brr, brc = tlr + rows, tlc + cols
     result = array[max(tlr, 0):brr, max(tlc, 0):brc]
     if fill is not None:
-        left = 0 if tlc >= 0 else abs(tlc)
+        left = abs(tlc) * (tlc < 0)  # 0 if tlc >= 0 else abs(tlc)
         right = 0 if brc <= width else brc - width
         top = 0 if tlr >= 0 else abs(tlr)
         bottom = 0 if brr <= height else brr - height
@@ -28,7 +29,7 @@ def test():
 
     Props to @shoeffner
     """
-    in_array = np.array(range(1, 31)).reshape(5, 6)
+    in_array = np.asarray(range(1, 31)).reshape(5, 6)
 
     out_array_0 = np.array([
         [8, 9, 10],
