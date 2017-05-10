@@ -3,6 +3,7 @@ import sys
 import subprocess
 import shutil
 import textwrap
+import traceback
 
 import pandas as pd
 
@@ -64,8 +65,8 @@ def check():
 
     test_func(log, ans1, 'first_gen', pokemon.first_gen, series_check)
     test_func(log, ans2, 'highest_hp', pokemon.highest_hp, series_check)
-    test_func(log, ans3, 'mean_attack_by_type', pokemon.mean_attack_by_type, dataframe_check)
-    test_func(log, ans4, 'high_defense', pokemon.high_defense, dataframe_check)
+    test_func(log, ans3, 'mean_attack_by_type', pokemon.mean_attack_by_type, mean_attack_check)
+    test_func(log, ans4, 'high_defense', pokemon.high_defense, high_defense_check)
     test_func(log, ans5, 'deduplicated', pokemon.deduplicated, series_check)
 
     if len(log) == 0:
@@ -84,6 +85,7 @@ def test_func(log, answer, func_name, func, check_func):
 {}\
             """.format(func_name, err_str)
             )
+        return
 
     if not isinstance(theirs, (pd.DataFrame, pd.Series)):
         log.append(
@@ -99,8 +101,18 @@ Actual result:
 {}\
                 """.format(func_name, answer.head(10), theirs.head(10)))
 
+def mean_attack_check(a, b):
+    a_i = a.set_index('Type 1')
+    b_i = b.set_index('Type 1')
+    return a_i.sort_index().equals(b_i.sort_index())
+
+def high_defense_check(a, b):
+    a_i = a.set_index('Name')
+    b_i = b.set_index('Name')
+    return a_i.sort_index().equals(b_i.sort_index())
+
 def series_check(a, b):
-    return (a.values == b.values).all()
+    return (a.sort_index().values == b.sort_index().values).all()
 
 def dataframe_check(a, b):
     return a.equals(b)
